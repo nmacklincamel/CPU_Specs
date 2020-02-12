@@ -2,13 +2,16 @@
 #          --OR-- to find *all* AMD/Intel CPUs that take either ddr2, ddr3, or ddr4
 
 # Gathered Information from amd.com && ark.intel.com
-
+# ------------------------------------------------------------------------------
 # Installed imports
 from bs4 import BeautifulSoup
 # Ordinary imports
 import requests
 import string
 import re
+# Reading stored data
+import csv
+import sys
 
 def main():
 
@@ -27,21 +30,51 @@ def main():
 #   that type of ram using price_low to price_high
 def RAM():
     while True:
-        amd_vs_intel = input("Enter 1 if the CPU you want to search for is Intel or enter 2 if its AMD:\n")
-        if amd_vs_intel == "2":
-            cpu_name = input("Enter the name of your CPU (i.e. i7-4790K or FX 8350):\n")
-            request_get = requests.get(,headers={'', 'User-Agent': 'Mozilla/5.0'})
+        amd_vs_intel = input("Enter 1 if the CPU you want to search for is AMD or enter 2 if its Intel:\n") # decide which file to use -- can be omitted a search delim is added
+        if amd_vs_intel == "1": # AMD
+            cpu_name = input("Enter the name of your CPU (i.e. fx-6300 or FX 8350):\n")
+
+            with open('AMD_processors_list_2012-2020.csv',"r") as file:
+                counter = 0
+                csv_read = csv.reader(file)
+                for line in csv_read:
+                    for item in line:
+                        if cpu_name == item:
+# TODO: Must create a way to display the data in 'line' that equals the cpu_name in a format that looks good and omits the uneccessary items
+    # Name of processor -if any more- i7-4790k ---> Intel Core i7-4790K Devil's Canyon Quad-Core 4.0GHz
+    # ddr_type : ***
+    # 2-5 links to pages where you can view the corresponding RAM
+        # Possibly with ratings of which RAM is the best to worst
+        # links should have Rated(best-worst), pricing, name, site name, and link
+                            print(line)
+
+                        counter += 1 # extra precaution incase data does not have the same amount of items
+                    # end of item for
+                # end of line for
 
             # request_get = requests.get(''.join(['https://www.amd.com/en/products/cpu/amd-', cpu_name.replace(" ","-")]), headers={'User-Agent': 'Mozilla/5.0'}) # using https for the time being
             # amd_soup = BeautifulSoup(request_get.content, "html5lib")
-            print("Nicely printed amd stuff\n")
-            break
-        elif amd_vs_intel == "1":
-            cpu_name = input("Enter the name of your CPU (i.e. i7-4790K or FX 8350):\n")
+            break # terminates program
+        elif amd_vs_intel == "2":# Intel
+            cpu_name = input("Enter the name of your CPU (i.e. i7-4790K or i7 4790k):\n")
+            with open('Intel_processors_list_2006-2019.csv',"r") as file:
+                counter = 0
+                csv_read = csv.reader(file)
+                for line in csv_read:
+                    for item in line:
+                        if cpu_name == item:
+# TODO: Must create a way to display the data in 'line' that equals the cpu_name in a format that looks good and omits the uneccessary items
+    # Name of processor -if any more- i7-4790k ---> Intel Core i7-4790K Devil's Canyon Quad-Core 4.0GHz
+    # ddr_type : ***
+    # 2-5 links to pages where you can view the corresponding RAM
+        # Possibly with ratings of which RAM is the best to worst
+        # links should have Rated(best-worst), pricing, name, site name, and link
+                            print(line)
 
-            # do the same for amd but use an intel link
-            print("Nicely printed intel stuff\n")
-            break
+                        counter += 1 # extra precaution incase data does not have the same amount of items
+                    # end of item for
+                # end of line for
+            break # terminates program
         else:
             print("Sorry, that was *NOT* 1 or 2. Please try again.")
 
