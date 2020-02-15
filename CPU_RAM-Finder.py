@@ -1,7 +1,15 @@
-# Problem: I want to easily find the RAM that I can buy that corresponds with specific Intel CPUs. (i.e. i7 4790k)
-#          --OR-- to find *all* AMD/Intel CPUs that take either ddr2, ddr3, or ddr4
-
+# Problem:
+#   I want to easily find the RAM that I can buy that corresponds with specific Intel CPUs. (i.e. i7 4790k)
+#          --OR--
+#   to find *all* AMD/Intel CPUs that take either ddr2, ddr3, or ddr4
+#
 # Gathered Information from amd.com && ark.intel.com
+#
+# DISCLAIMER: Sooo, I reached a point where I was being recognized as a bot for
+#   you know... web scraping... So, instead... I found the data on the above websites
+#   and saved them as a CSV. As this will not be a permanent fix with new hardware
+#   coming out all the time, I will figure out a way to become an unrecognizable bot
+#   and make this program more adaptable. --- That IS why I am using a CSV.
 # ------------------------------------------------------------------------------
 # Installed imports
 from bs4 import BeautifulSoup
@@ -35,43 +43,48 @@ def RAM():
             cpu_name = input("Enter the name of your CPU (i.e. fx-6300 or FX 8350):\n")
 
             with open('AMD_processors_list_2012-2020.csv',"r") as file:
-                counter = 0
                 csv_read = csv.reader(file)
                 for line in csv_read:
                     for item in line:
                         if cpu_name == item:
+                            temp_line = line # use this for more complex parts of the tool
+                            print("\nHere are some specs found about the searched CPU:")
+                            print("Processor:             {0}".format(line[2]))
+                            cleprint("Release year:          {0}".format(line[8]))
+                            print("Cores/Threads:         {0} cores/{1} threads".format(line[10],line[11]))
+                            print("Base/Max frequency:    {0}/{1} ".format(line[14],line[15]))
+                            print("Supported RAM type(s): {0}".format(line[30]))
 # TODO: Must create a way to display the data in 'line' that equals the cpu_name in a format that looks good and omits the uneccessary items
     # Name of processor -if any more- i7-4790k ---> Intel Core i7-4790K Devil's Canyon Quad-Core 4.0GHz
     # ddr_type : ***
     # 2-5 links to pages where you can view the corresponding RAM
         # Possibly with ratings of which RAM is the best to worst
         # links should have Rated(best-worst), pricing, name, site name, and link
-                            print(line)
-
-                        counter += 1 # extra precaution incase data does not have the same amount of items
                     # end of item for
                 # end of line for
-
             # request_get = requests.get(''.join(['https://www.amd.com/en/products/cpu/amd-', cpu_name.replace(" ","-")]), headers={'User-Agent': 'Mozilla/5.0'}) # using https for the time being
             # amd_soup = BeautifulSoup(request_get.content, "html5lib")
             break # terminates program
-        elif amd_vs_intel == "2":# Intel
+        elif amd_vs_intel == "2": # Intel
             cpu_name = input("Enter the name of your CPU (i.e. i7-4790K or i7 4790k):\n")
             with open('Intel_processors_list_2006-2019.csv',"r") as file:
-                counter = 0
                 csv_read = csv.reader(file)
                 for line in csv_read:
                     for item in line:
                         if cpu_name == item:
+                            temp_line = line # use this for more complex parts of the tool
 # TODO: Must create a way to display the data in 'line' that equals the cpu_name in a format that looks good and omits the uneccessary items
     # Name of processor -if any more- i7-4790k ---> Intel Core i7-4790K Devil's Canyon Quad-Core 4.0GHz
     # ddr_type : ***
     # 2-5 links to pages where you can view the corresponding RAM
         # Possibly with ratings of which RAM is the best to worst
         # links should have Rated(best-worst), pricing, name, site name, and link
-                            print(line)
-
-                        counter += 1 # extra precaution incase data does not have the same amount of items
+                            print("\nHere are some specs found about the searched CPU:")
+                            print("Processor:             {0}{1}".format(line[1],line[2]))
+                            print("Release year:          {0}".format(line[4]))
+                            print("Cores/Threads:         {0} cores/{1} threads".format(line[6],line[7]))
+                            print("Base/Max frequency:    {0} GHz/{1} GHz".format(line[8],line[11]))
+                            print("Supported RAM type(s): {0}".format(line[13]))
                     # end of item for
                 # end of line for
             break # terminates program
